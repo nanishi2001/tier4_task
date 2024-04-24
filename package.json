@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+	"codegen:tier4": "npx playwright codegen https://account.tier4.jp/login",
+	"test:tier4": "npx playwright test --ui"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
