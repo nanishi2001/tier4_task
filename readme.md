@@ -1,4 +1,6 @@
-# テスト設計
+# Tier4_Task
+
+## テスト設計
 
 [TIER IV ACCOUNT](https://account.tier4.jp/login)を今回のE2Eテストの対象とする。
 そのシステムが持つ主要な機能のうちログイン機能をテストする。
@@ -9,3 +11,9 @@
 - ユーザー名間違い、パスワード間違いに伴うバリデーション
 - Sign upを押下時の遷移
 - forgot password?を押下時の遷移
+
+また、今回テストする環境はChrome系のみとする。
+
+## 注意点
+
+ログイン情報は[src\setting.json](src\setting.json)に格納
