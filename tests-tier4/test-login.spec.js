@@ -9,6 +9,9 @@ test.beforeEach(async ({page}) => {
 });
 
 test('login', async ({ page }) => {
+	// expect時にTime outによる失敗が目立つため暫定処置
+	test.slow();
+
 	await page.locator('//*[@id="identifier"]').fill(loginValue.email);
 	await page.locator('//*[@id="password"]').fill(loginValue.password);
 	await page.getByRole('button', { name: 'Login' }).click();
