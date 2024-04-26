@@ -16,4 +16,4 @@
 
 ## 注意点
 
-ログイン情報は[src\JSON\setting.JSON](src\JSON\setting.JSON)に格納
+ログイン情報は[src\JSON\setting.JSON](src\JSON\setting.JSON)に格納するものとする。
