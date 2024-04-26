@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
  * JSONファイルを読みだして返す
  * 
  * @param {String} path - 読みだしたいJSONファイルのパス
- * @return {JSON} value - JSONファイルの中身
+ * @returns {JSON} value - JSONファイルの中身
  */
 export const readJSON = (path) => {
 	const bufferData = readFileSync(path);

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { readJSON } from "../src/readJSON/readJSON.js";
 import { LoginPage } from '../src/POM/loginpage.js';
+import { makeFaultUser } from '../src/makeFaultUser/makeFaultUser.js';
 
 const loginSettingPath = "./src/JSON/login_setting.json";
 const loginValue = readJSON(loginSettingPath);
@@ -39,10 +40,7 @@ test.describe('Input miss validation', () => {
 });
 
 test.describe('Fault entered validation', () => {
-	const faultEntered = {
-		identifier: 'aaaaaaa11111@gggmail.com',
-		password: 'aaaaaaaaa1111111',
-	};
+	const faultEntered = makeFaultUser()
 
 	test('Fault entered identifier', async ({ page }) => {
 		const loginPage = new LoginPage(page);
