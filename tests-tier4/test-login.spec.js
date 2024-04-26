@@ -19,18 +19,20 @@ test('login', async ({ page }) => {
 	await expect(page).toHaveURL("https://portal.tier4.jp/");
 });
 
-test('Not entered identifier', async ({ page }) => {
-	await page.getByRole('button', { name: 'Login' }).click();
-
-	await expect(
-		page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
-	).toContainText('identifier is missing.')
-})
-
-test('Not entered password', async({ page }) => {
-	await page.getByRole('button', { name: 'Login' }).click();
-
-	await expect(
-		page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
-	).toContainText('password is missing.')
+test.describe('Not entered validation', () => {
+	test('Not entered identifier', async ({ page }) => {
+		await page.getByRole('button', { name: 'Login' }).click();
+	
+		await expect(
+			page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
+		).toContainText('identifier is missing.')
+	})
+	
+	test('Not entered password', async({ page }) => {
+		await page.getByRole('button', { name: 'Login' }).click();
+	
+		await expect(
+			page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
+		).toContainText('password is missing.')
+	})
 })
