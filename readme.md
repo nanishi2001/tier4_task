@@ -12,8 +12,8 @@
 - Sign upを押下時の遷移
 - forgot password?を押下時の遷移
 
-また、今回テストする環境はChrome系のみとする。
+また、今回テストする環境はGoogle Chromeのみとする。
 
 ## 注意点
 
-ログイン情報は[src\setting.json](src\setting.json)に格納
+ログイン情報は[src\JSON\setting.JSON](src\JSON\setting.JSON)に格納

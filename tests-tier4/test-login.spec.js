@@ -9,13 +9,10 @@ test.beforeEach(async ({page}) => {
 })
 
 test('login', async ({ page }) => {
-	// 一番初めに読み込んでいるページ
 	await page.locator('//*[@id="identifier"]').fill(loginValue.email);
 	await page.locator('//*[@id="password"]').fill(loginValue.password);
 	await page.getByRole('button', { name: 'Login' }).click();
 
-	// 途中に挟まる
-	//if()
 	await page.locator('//*[@id="password"]').fill(loginValue.password);
 	await page.getByRole('button', { name: 'Login' }).click();
 
