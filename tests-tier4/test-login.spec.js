@@ -46,3 +46,9 @@ test('Fault entered varidation', async ({ page }) => {
 		page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
 	).toBeVisible()
 });
+
+test('Sign up', async ({ page }) => {
+	await page.getByRole('link', { name: 'SIGN UP' }).click();
+
+	await expect(page).toHaveURL('https://account.tier4.jp/registration?return_to=https://portal.tier4.jp');
+})
