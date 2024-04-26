@@ -12,7 +12,7 @@
 - Sign upを押下時の遷移
 - forgot password?を押下時の遷移
 
-また、今回テストする環境はweb kitとsafari以外とする。
+また、今回テストする環境はwebkitとsafari、firefox以外とする。
 
 ## 注意点
 
