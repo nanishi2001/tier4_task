@@ -52,3 +52,9 @@ test('Sign up', async ({ page }) => {
 
 	await expect(page).toHaveURL('https://account.tier4.jp/registration?return_to=https://portal.tier4.jp');
 })
+
+test('Forgot password', async ({ page }) => {
+	await page.getByRole('link', { name: 'Forgot password?' }).click();
+
+	await expect(page).toHaveURL('https://account.tier4.jp/recovery');
+})
