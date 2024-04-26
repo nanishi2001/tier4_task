@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { readJSON } from "../src/readJSON/readJSON.js";
 import { LoginPage } from '../src/POM/loginpage.js';
 import { makeFaultUser } from '../src/makeFaultUser/makeFaultUser.js';
@@ -9,13 +9,18 @@ const loginValue = readJSON(loginSettingPath);
 const testURLsPath = "./src/JSON/test_URL.json";
 const testURLs = readJSON(testURLsPath);
 
+const test = base.extend({
+	loginPage: async ({ page }, use) => {
+		const loginPage = new LoginPage(page);
+		await use(loginPage);
+	},
+});
+
 test.beforeEach(async ({page}) => {
 	await page.goto(testURLs.tier4LoginURL);
 });
 
-test('login', async ({ page }) => {
-	const loginPage = new LoginPage(page);
-
+test('login', async ({ page, loginPage }) => {
 	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
 	await loginPage.pushComfirmButton(testURLs.comfirmURL, loginValue.password);
 	await expect(page).toHaveURL(testURLs.tier4URL);
@@ -23,48 +28,40 @@ test('login', async ({ page }) => {
 
 test.describe('Input miss validation', () => {
 
-	test('Input miss identifier', async ({ page }) => {
-		const loginPage = new LoginPage(page);
+	test('Input miss identifier', async ({ loginPage }) => {
 		await loginPage.pushLoginButton(undefined, loginValue.password);
 	});
 	
-	test('Input Miss password', async({ page }) => {
-		const loginPage = new LoginPage(page);
+	test('Input Miss password', async({ loginPage }) => {
 		await loginPage.pushLoginButton(loginValue.identifier);
 	});
 
-	test('Input miss both', async ({ page }) => {
-		const loginPage = new LoginPage(page);
+	test('Input miss both', async ({ loginPage }) => {
 		await loginPage.pushLoginButton();
 	});
 });
 
 test.describe('Fault entered validation', () => {
-	const faultEntered = makeFaultUser()
+	const faultEntered = makeFaultUser();
 
-	test('Fault entered identifier', async ({ page }) => {
-		const loginPage = new LoginPage(page);
+	test('Fault entered identifier', async ({ loginPage }) => {
 		await loginPage.expectFaultLogin(faultEntered.identifier, loginValue.password);
 	});
 
-	test('Fault entered password', async({ page }) => {
-		const loginPage = new LoginPage(page);
+	test('Fault entered password', async({ loginPage }) => {
 		await loginPage.expectFaultLogin(loginValue.identifier, faultEntered.password);
 	});
 
-	test('Fault entered both', async ({ page }) => {
-		const loginPage = new LoginPage(page);
+	test('Fault entered both', async ({ loginPage }) => {
 		await loginPage.expectFaultLogin(faultEntered.identifier, faultEntered.password);
 	});
 	
 });
 
-test('Sign up', async ({ page }) => {
-	const loginPage = new LoginPage(page);
+test('Sign up', async ({ loginPage }) => {
 	await loginPage.pushSignUpButton(testURLs.signUpURL);
 });
 
-test('Forgot password', async ({ page }) => {
-	const loginPage = new LoginPage(page);
+test('Forgot password', async ({ loginPage }) => {
 	await loginPage.pushForgotPasswordButton(testURLs.forgotPasswordURL);
 });
