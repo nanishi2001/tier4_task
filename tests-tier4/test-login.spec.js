@@ -1,63 +1,114 @@
 import { test, expect } from '@playwright/test';
 import { readJSON } from "../src/readJSON/readJSON.js";
 
-const path = "./src/JSON/setting.json"
-const loginValue = readJSON(path);
+const loginSettingPath = "./src/JSON/login_setting.json";
+const loginValue = readJSON(loginSettingPath);
+
+const testURLsPath = "./src/JSON/test_URL.json";
+const testURLs = readJSON(testURLsPath);
 
 test.beforeEach(async ({page}) => {
-	await page.goto('https://account.tier4.jp/login');
+	await page.goto(testURLs.tier4LoginURL);
 });
 
 test('login', async ({ page }) => {
 	// expect時にTime outによる失敗が目立つため暫定処置
 	test.slow();
 
-	await page.locator('//*[@id="identifier"]').fill(loginValue.email);
+	await page.locator('//*[@id="identifier"]').fill(loginValue.identifier);
 	await page.locator('//*[@id="password"]').fill(loginValue.password);
 	await page.getByRole('button', { name: 'Login' }).click();
 
 	await page.locator('//*[@id="password"]').fill(loginValue.password);
 	await page.getByRole('button', { name: 'Login' }).click();
 
-	await expect(page).toHaveURL("https://portal.tier4.jp/");
+	await expect(page).toHaveURL(testURLs.tier4URL);
 });
 
 test.describe('Not entered validation', () => {
+	const validateMessages = {
+		identifier: 'identifier is missing.',
+		password: 'password is missing.',
+	};
+
 	test('Not entered identifier', async ({ page }) => {
+		await page.locator('//*[@id="password"]').fill(loginValue.password);
 		await page.getByRole('button', { name: 'Login' }).click();
 	
 		await expect(
 			page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
-		).toContainText('identifier is missing.')
+		).toContainText(validateMessages.identifier);
 	});
 	
 	test('Not entered password', async({ page }) => {
+		await page.locator('//*[@id="identifier"]').fill(loginValue.identifier);
 		await page.getByRole('button', { name: 'Login' }).click();
 	
 		await expect(
 			page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
-		).toContainText('password is missing.')
+		).toContainText(validateMessages.password);
+	});
+
+	test('Not entered both', async ({ page }) => {
+		await page.getByRole('button', { name: 'Login' }).click();
+
+		await expect.soft(
+			page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
+		).toContainText(validateMessages.identifier);
+
+		await expect.soft(
+			page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
+		).toContainText(validateMessages.password);
 	});
 });
 
-test('Fault entered varidation', async ({ page }) => {
-	await page.locator('//*[@id="identifier"]').fill("aaaaaaa11111@gggmail.com");
-	await page.locator('//*[@id="password"]').fill("aaaaaaaaa1111111");
-	await page.getByRole('button', { name: 'Login' }).click();
+test.describe('Fault entered validation', () => {
+	const faultEntered = {
+		identifier: 'aaaaaaa11111@gggmail.com',
+		password: 'aaaaaaaaa1111111',
+		validateMessage: 'The provided credentials are invalid, check for spelling mistakes in your password or username, email address, or phone number.',
+	};
 
-	await expect(
-		page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
-	).toBeVisible()
+	test('Fault entered identifier', async ({ page }) => {
+		await page.locator('//*[@id="identifier"]').fill(loginValue.identifier);
+		await page.locator('//*[@id="password"]').fill(faultEntered.password);
+		await page.getByRole('button', { name: 'Login' }).click();
+	
+		await expect(
+			page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
+		).toContainText(faultEntered.validateMessage);
+	});
+
+	test('Fault entered password', async({ page }) => {
+		await page.locator('//*[@id="identifier"]').fill(faultEntered.identifier);
+		await page.locator('//*[@id="password"]').fill(loginValue.password);
+		await page.getByRole('button', { name: 'Login' }).click();
+	
+		await expect(
+			page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
+		).toContainText(faultEntered.validateMessage);
+	});
+
+	test('Fault entered both', async ({ page }) => {
+		await page.locator('//*[@id="identifier"]').fill(faultEntered.identifier);
+		await page.locator('//*[@id="password"]').fill(faultEntered.password);
+		await page.getByRole('button', { name: 'Login' }).click();
+	
+		await expect(
+			page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
+		).toContainText(faultEntered.validateMessage);
+	});
+	
 });
 
 test('Sign up', async ({ page }) => {
-	await page.getByRole('link', { name: 'SIGN UP' }).click();
+	await page.locator('//*[@id="root"]/section/main/section/div[2]/div/a').click();
 
-	await expect(page).toHaveURL('https://account.tier4.jp/registration?return_to=https://portal.tier4.jp');
-})
+	await expect(page).toHaveURL(testURLs.signUpURL);
+});
 
 test('Forgot password', async ({ page }) => {
-	await page.getByRole('link', { name: 'Forgot password?' }).click();
+	await page.locator('//*[@id="root"]/section/main/section/p/a').click();
 
-	await expect(page).toHaveURL('https://account.tier4.jp/recovery');
-})
+	await expect(page).toHaveURL(testURLs.forgotPasswordURL);
+});

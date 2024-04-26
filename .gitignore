@@ -5,4 +5,4 @@ node_modules/
 /playwright/.cache/
 tests/
 tests-examples/
-src/JSON/setting.JSON
+src/JSON/login_setting.JSON

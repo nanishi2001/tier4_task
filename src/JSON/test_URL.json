@@ -1,0 +1,6 @@
+{
+	"tier4URL": "https://portal.tier4.jp/",
+	"tier4LoginURL": "https://account.tier4.jp/login",
+	"signUpURL": "https://account.tier4.jp/registration?return_to=https://portal.tier4.jp",
+	"forgotPasswordURL": "https://account.tier4.jp/recovery"
+}
