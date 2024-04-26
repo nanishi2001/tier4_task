@@ -26,7 +26,7 @@ test.describe('Not entered validation', () => {
 		await expect(
 			page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
 		).toContainText('identifier is missing.')
-	})
+	});
 	
 	test('Not entered password', async({ page }) => {
 		await page.getByRole('button', { name: 'Login' }).click();
@@ -34,5 +34,15 @@ test.describe('Not entered validation', () => {
 		await expect(
 			page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
 		).toContainText('password is missing.')
-	})
-})
+	});
+});
+
+test('Fault entered varidation', async ({ page }) => {
+	await page.locator('//*[@id="identifier"]').fill("aaaaaaa11111@gggmail.com");
+	await page.locator('//*[@id="password"]').fill("aaaaaaaaa1111111");
+	await page.getByRole('button', { name: 'Login' }).click();
+
+	await expect(
+		page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
+	).toBeVisible()
+});
