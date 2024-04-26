@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readJSON } from "../src/readJSON/readJSON.js";
+import { LoginPage } from '../src/POM/loginpage.js';
 
 const loginSettingPath = "./src/JSON/login_setting.json";
 const loginValue = readJSON(loginSettingPath);
@@ -12,51 +13,28 @@ test.beforeEach(async ({page}) => {
 });
 
 test('login', async ({ page }) => {
-	await page.locator('//*[@id="identifier"]').fill(loginValue.identifier);
-	await page.locator('//*[@id="password"]').fill(loginValue.password);
-	await page.getByRole('button', { name: 'Login' }).click();
+	const loginPage = new LoginPage(page);
 
-	await page.waitForURL(testURLs.comfirmURL);
-	await page.locator('//*[@id="password"]').fill(loginValue.password);
-	await page.getByRole('button', { name: 'Login' }).click();
-
+	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
+	await loginPage.pushComfirmButton(testURLs.comfirmURL, loginValue.password);
 	await expect(page).toHaveURL(testURLs.tier4URL);
 });
 
-test.describe('Not entered validation', () => {
-	const validateMessages = {
-		identifier: 'identifier is missing.',
-		password: 'password is missing.',
-	};
+test.describe('Input miss validation', () => {
 
-	test('Not entered identifier', async ({ page }) => {
-		await page.locator('//*[@id="password"]').fill(loginValue.password);
-		await page.getByRole('button', { name: 'Login' }).click();
-	
-		await expect(
-			page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
-		).toContainText(validateMessages.identifier);
+	test('Input miss identifier', async ({ page }) => {
+		const loginPage = new LoginPage(page);
+		await loginPage.pushLoginButton(undefined, loginValue.password);
 	});
 	
-	test('Not entered password', async({ page }) => {
-		await page.locator('//*[@id="identifier"]').fill(loginValue.identifier);
-		await page.getByRole('button', { name: 'Login' }).click();
-	
-		await expect(
-			page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
-		).toContainText(validateMessages.password);
+	test('Input Miss password', async({ page }) => {
+		const loginPage = new LoginPage(page);
+		await loginPage.pushLoginButton(loginValue.identifier);
 	});
 
-	test('Not entered both', async ({ page }) => {
-		await page.getByRole('button', { name: 'Login' }).click();
-
-		await expect.soft(
-			page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span')
-		).toContainText(validateMessages.identifier);
-
-		await expect.soft(
-			page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span')
-		).toContainText(validateMessages.password);
+	test('Input miss both', async ({ page }) => {
+		const loginPage = new LoginPage(page);
+		await loginPage.pushLoginButton();
 	});
 });
 
@@ -64,49 +42,31 @@ test.describe('Fault entered validation', () => {
 	const faultEntered = {
 		identifier: 'aaaaaaa11111@gggmail.com',
 		password: 'aaaaaaaaa1111111',
-		validateMessage: 'The provided credentials are invalid, check for spelling mistakes in your password or username, email address, or phone number.',
 	};
 
 	test('Fault entered identifier', async ({ page }) => {
-		await page.locator('//*[@id="identifier"]').fill(loginValue.identifier);
-		await page.locator('//*[@id="password"]').fill(faultEntered.password);
-		await page.getByRole('button', { name: 'Login' }).click();
-	
-		await expect(
-			page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
-		).toContainText(faultEntered.validateMessage);
+		const loginPage = new LoginPage(page);
+		await loginPage.expectFaultLogin(faultEntered.identifier, loginValue.password);
 	});
 
 	test('Fault entered password', async({ page }) => {
-		await page.locator('//*[@id="identifier"]').fill(faultEntered.identifier);
-		await page.locator('//*[@id="password"]').fill(loginValue.password);
-		await page.getByRole('button', { name: 'Login' }).click();
-	
-		await expect(
-			page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
-		).toContainText(faultEntered.validateMessage);
+		const loginPage = new LoginPage(page);
+		await loginPage.expectFaultLogin(loginValue.identifier, faultEntered.password);
 	});
 
 	test('Fault entered both', async ({ page }) => {
-		await page.locator('//*[@id="identifier"]').fill(faultEntered.identifier);
-		await page.locator('//*[@id="password"]').fill(faultEntered.password);
-		await page.getByRole('button', { name: 'Login' }).click();
-	
-		await expect(
-			page.locator('//*[@id="root"]/section/main/section/form/div[1]/div')
-		).toContainText(faultEntered.validateMessage);
+		const loginPage = new LoginPage(page);
+		await loginPage.expectFaultLogin(faultEntered.identifier, faultEntered.password);
 	});
 	
 });
 
 test('Sign up', async ({ page }) => {
-	await page.locator('//*[@id="root"]/section/main/section/div[2]/div/a').click();
-
-	await expect(page).toHaveURL(testURLs.signUpURL);
+	const loginPage = new LoginPage(page);
+	await loginPage.pushSignUpButton(testURLs.signUpURL);
 });
 
 test('Forgot password', async ({ page }) => {
-	await page.locator('//*[@id="root"]/section/main/section/p/a').click();
-
-	await expect(page).toHaveURL(testURLs.forgotPasswordURL);
+	const loginPage = new LoginPage(page);
+	await loginPage.pushForgotPasswordButton(testURLs.forgotPasswordURL);
 });
