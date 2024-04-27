@@ -51,6 +51,9 @@ export class LoginPage{
 
 	/**
 	 * Login時に誤った入力を実施した場合の処理
+	 * 
+	 * @param {string} identifier - 架空のユーザーID情報
+	 * @param {string} password - 架空のパスワード情報
 	 */
 	async expectFaultLogin(identifier, password) {
 		await this.pushLoginButton(identifier, password);
