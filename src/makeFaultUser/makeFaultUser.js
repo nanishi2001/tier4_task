@@ -14,4 +14,3 @@ export const makeFaultUser = () => {
 		password: password
 	}
 } 
-

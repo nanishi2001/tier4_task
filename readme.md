@@ -17,3 +17,11 @@
 ## 注意点
 
 ログイン情報は[src\JSON\login_setting.JSON](src\JSON\login_setting.JSON)に格納するものとする。
+
+## 使用方法
+
+下記コードを実行するとPlaywrightのUIテスト画面が立ち上がる。
+
+```bush
+npm run test:tier4
+```
