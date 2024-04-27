@@ -9,6 +9,8 @@ const loginValue = readJSON(LOGIN_SETTING_PATH);
 const TEST_URL_PATH = "./src/JSON/test_URL.json";
 const testURLs = readJSON(TEST_URL_PATH);
 
+const faultEntered = makeFaultUser();
+
 const test = base.extend({
 	loginPage: async ({ page }, use) => {
 		const loginPage = new LoginPage(page);
@@ -20,11 +22,16 @@ test.beforeEach(async ({page}) => {
 	await page.goto(testURLs.tier4LoginURL);
 });
 
-test('login', async ({ page, loginPage }) => {
+test('Login', async ({ page, loginPage }) => {
 	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
 	await loginPage.pushConfirmButton(testURLs.comfirmURL, loginValue.password);
 	await expect(page).toHaveURL(testURLs.tier4URL);
 });
+
+test('Fault confirm password', async({ loginPage }) => {
+	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
+	await loginPage.pushConfirmButton(testURLs.comfirmURL, faultEntered.password);
+})
 
 test.describe('Input miss validation', () => {
 
@@ -42,7 +49,6 @@ test.describe('Input miss validation', () => {
 });
 
 test.describe('Fault entered validation', () => {
-	const faultEntered = makeFaultUser();
 
 	test('Fault entered identifier', async ({ loginPage }) => {
 		await loginPage.expectFaultLogin(faultEntered.identifier, loginValue.password);

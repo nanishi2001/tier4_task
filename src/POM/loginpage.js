@@ -45,6 +45,8 @@ export class LoginPage{
 		await this.page.waitForURL(URL);
 		await this.loginPassword.fill(password);
 		await this.loginButton.click();
+
+		await expect.soft(this.faultMessage).toContainText(faultValidateMessage.validateMessage);
 	};
 
 	/**
