@@ -33,6 +33,8 @@ export class LoginPage{
 
 		if(!identifier) await expect.soft(this.missIdentifierMessage).toContainText(missValidateMessages.identifier);
 		if(!password) await expect.soft(this.missPasswordMessage).toContainText(missValidateMessages.password);
+
+		return 0;
 	};
 
 	/**
@@ -47,6 +49,8 @@ export class LoginPage{
 		await this.loginButton.click();
 
 		await expect.soft(this.faultMessage).toContainText(faultValidateMessage.validateMessage);
+
+		return 0;
 	};
 
 	/**
@@ -58,6 +62,8 @@ export class LoginPage{
 	async expectFaultLogin(identifier, password) {
 		await this.pushLoginButton(identifier, password);
 		await expect(this.faultMessage).toContainText(faultValidateMessage.validateMessage);
+
+		return 0;
 	}
 
 	/**
@@ -68,6 +74,8 @@ export class LoginPage{
 	async pushSignUpButton(URL) {
 		await this.signUpButton.click();
 		await expect(this.page).toHaveURL(URL);
+
+		return 0;
 	};
 
 	/**
@@ -78,5 +86,7 @@ export class LoginPage{
 	async pushForgotPasswordButton(URL) {
 		await this.forgotPasswordButton.click();
 		await expect(this.page).toHaveURL(URL);
+
+		return 0;
 	};
 }
