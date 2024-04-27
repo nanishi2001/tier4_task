@@ -1,23 +1,23 @@
 import { expect } from '@playwright/test';
 import { readJSON } from '../readJSON/readJSON';
 
-const missMessagePath = "./src/JSON/miss_message.json";
-const missValidateMessages = readJSON(missMessagePath);
+const MISS_MESSAGE_PATH = "./src/JSON/miss_message.json";
+const missValidateMessages = readJSON(MISS_MESSAGE_PATH);
 
-const faultMessagePath = "./src/JSON/fault_message.json";
-const faultValidateMessage = readJSON(faultMessagePath);
+const FAULT_MESSAGE_PATH = "./src/JSON/fault_message.json";
+const faultValidateMessage = readJSON(FAULT_MESSAGE_PATH);
 
 export class LoginPage{
 	constructor(page) {
 		this.page = page;
-		this.loginIendifier = page.locator('//*[@id="identifier"]');
-		this.loginPassword = page.locator('//*[@id="password"]');
+		this.loginIendifier = page.getByPlaceholder('Enter your email');
+		this.loginPassword = page.getByPlaceholder('Enter your password');
 		this.loginButton = page.getByRole('button', { name: 'Login' });
-		this.missIdentifierMessage = page.locator('//*[@id="root"]/section/main/section/form/div[1]/label/span');
-		this.missPasswordMessage = page.locator('//*[@id="root"]/section/main/section/form/div[2]/label/span');
-		this.faultMessage = page.locator('//*[@id="root"]/section/main/section/form/div[1]/div');
-		this.signUpButton = page.locator('//*[@id="root"]/section/main/section/div[2]/div/a');
-		this.forgotPasswordButton = page.locator('//*[@id="root"]/section/main/section/p/a');
+		this.missIdentifierMessage = page.locator('label').filter({ hasText: missValidateMessages.identifier });
+		this.missPasswordMessage = page.locator('label').filter({ hasText: missValidateMessages.password });
+		this.faultMessage = page.locator('div').filter({ hasText: faultValidateMessage.validateMessage }).nth(2);
+		this.signUpButton = page.getByRole('link', { name: 'SIGN UP' });
+		this.forgotPasswordButton = page.getByRole('link', { name: 'Forgot password?' });
 	};
 
 	/**
@@ -41,7 +41,7 @@ export class LoginPage{
 	 * @param {string} URL - コンフォームのURL
 	 * @param {string} password - ログイン時に使用するパスワード
 	 */
-	async pushComfirmButton(URL, password = "") {
+	async pushConfirmButton(URL, password = "") {
 		await this.page.waitForURL(URL);
 		await this.loginPassword.fill(password);
 		await this.loginButton.click();

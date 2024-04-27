@@ -3,11 +3,11 @@ import { readJSON } from "../src/readJSON/readJSON.js";
 import { LoginPage } from '../src/POM/loginpage.js';
 import { makeFaultUser } from '../src/makeFaultUser/makeFaultUser.js';
 
-const loginSettingPath = "./src/JSON/login_setting.json";
-const loginValue = readJSON(loginSettingPath);
+const LOGIN_SETTING_PATH = "./src/JSON/login_setting.json";
+const loginValue = readJSON(LOGIN_SETTING_PATH);
 
-const testURLsPath = "./src/JSON/test_URL.json";
-const testURLs = readJSON(testURLsPath);
+const TEST_URL_PATH = "./src/JSON/test_URL.json";
+const testURLs = readJSON(TEST_URL_PATH);
 
 const test = base.extend({
 	loginPage: async ({ page }, use) => {
@@ -22,7 +22,7 @@ test.beforeEach(async ({page}) => {
 
 test('login', async ({ page, loginPage }) => {
 	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
-	await loginPage.pushComfirmButton(testURLs.comfirmURL, loginValue.password);
+	await loginPage.pushConfirmButton(testURLs.comfirmURL, loginValue.password);
 	await expect(page).toHaveURL(testURLs.tier4URL);
 });
 
