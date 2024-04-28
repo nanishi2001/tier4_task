@@ -10,7 +10,7 @@ const faultValidateMessage = readJSON(FAULT_MESSAGE_PATH);
 export class LoginPage{
 	constructor(page) {
 		this.page = page;
-		this.loginIendifier = page.getByPlaceholder('Enter your email');
+		this.loginIndeifier = page.getByPlaceholder('Enter your email');
 		this.loginPassword = page.getByPlaceholder('Enter your password');
 		this.loginButton = page.getByRole('button', { name: 'Login' });
 		this.missIdentifierMessage = page.locator('label').filter({ hasText: missValidateMessages.identifier });
@@ -51,6 +51,12 @@ export class LoginPage{
 		return 0;
 	};
 
+	/**
+	 * コンフォーム処理に誤ったパスワードを使用した際の処理
+	 * 
+	 * @param {string} URL - コンフォームのURL
+	 * @param {string} password - ログイン時に使用するパスワード
+	 */
 	async expectFaultConfirm(URL, password) {
 		await this.pushConfirmButton(URL, password);
 		await expect.soft(this.faultMessage).toContainText(faultValidateMessage.validateMessage);

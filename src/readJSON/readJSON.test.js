@@ -25,6 +25,7 @@ describe("readJSON", () => {
     readFileSync.mockImplementation(() => "{ name: 'test', value: }");
 
     const testFunction = () => readJSON("path/to/invalid.json");
+	console.log(testFunction);
     expect(testFunction).toThrow(SyntaxError);
   });
 });
