@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	"codegen:tier4": "npx playwright codegen https://account.tier4.jp/login",
-	"test:tier4": "npx playwright test --ui"
+    "codegen:tier4": "npx playwright codegen https://account.tier4.jp/login",
+    "test:tier4": "npx playwright test --ui",
+	"vitest:makeFaultUser": "npx vitest run -t 'makeFaultUser'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.43.1",
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.7",
+    "vitest": "^1.5.2"
   }
 }
