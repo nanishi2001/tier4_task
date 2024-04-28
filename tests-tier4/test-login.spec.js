@@ -30,7 +30,7 @@ test('Login', async ({ page, loginPage }) => {
 
 test('Fault confirm password', async({ loginPage }) => {
 	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
-	await loginPage.pushConfirmButton(testURLs.comfirmURL, faultEntered.password);
+	await loginPage.expectFaultConfirm(testURLs.comfirmURL, faultEntered.password);
 })
 
 test.describe('Input miss validation', () => {

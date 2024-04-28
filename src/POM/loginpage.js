@@ -48,10 +48,15 @@ export class LoginPage{
 		await this.loginPassword.fill(password);
 		await this.loginButton.click();
 
+		return 0;
+	};
+
+	async expectFaultConfirm(URL, password) {
+		await this.pushConfirmButton(URL, password);
 		await expect.soft(this.faultMessage).toContainText(faultValidateMessage.validateMessage);
 
 		return 0;
-	};
+	}
 
 	/**
 	 * Login時に誤った入力を実施した場合の処理
