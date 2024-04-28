@@ -1,4 +1,4 @@
-import { fstatSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 
 /**
  * JSONファイルを読みだして返す
@@ -7,14 +7,14 @@ import { fstatSync, readFileSync } from 'fs';
  * @returns {JSON} parsedData - JSONファイルの中身
  */
 export const readJSON = (path) => {
-	let bufferData 
+	let parsedData = "";
 	try{
-		bufferData = readFileSync(path);
+		const bufferData = readFileSync(path);
+		const dataJSON = bufferData.toString();
+		parsedData = JSON.parse(dataJSON);
 	} catch(error) {
-		console.log(error);
 		throw error;
 	}
-	const dataJSON = bufferData.toString();
-	const parsedData = JSON.parse(dataJSON);
+
 	return parsedData;
 }
