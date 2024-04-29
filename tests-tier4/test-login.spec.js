@@ -23,92 +23,51 @@ test.beforeEach(async ({page}) => {
 });
 
 test('Login', async ({ page, loginPage }) => {
-	try {
-		await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
-		await loginPage.pushConfirmButton(testURLs.comfirmURL, loginValue.password);
-		await expect(page).toHaveURL(testURLs.tier4URL);
-	} catch(error) {
-		console.error('Error occured Login test: ', error);
-	}
+	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
+	await loginPage.pushConfirmButton(testURLs.comfirmURL, loginValue.password);
+	await expect(page).toHaveURL(testURLs.tier4URL);
 });
 
 test('Fault confirm password', async({ loginPage }) => {
-	try {
-		await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
-		await loginPage.expectFaultConfirm(testURLs.comfirmURL, faultEntered.password);
-	} catch(error) {
-		console.error('Error occured fault confirm test: ', error);
-	}
-
+	await loginPage.pushLoginButton(loginValue.identifier, loginValue.password);
+	await loginPage.expectFaultConfirm(testURLs.comfirmURL, faultEntered.password);
 })
 
 test.describe('Input miss validation', () => {
 
 	test('Input miss identifier', async ({ loginPage }) => {
-		try {
-			await loginPage.pushLoginButton(undefined, loginValue.password);
-		} catch(error) {
-			console.error('Error occured miss identifier tset: ', error);
-		}
+		await loginPage.pushLoginButton(undefined, loginValue.password);
 	});
 	
 	test('Input miss password', async({ loginPage }) => {
-		try {
-			await loginPage.pushLoginButton(loginValue.identifier);
-		} catch(error) {
-			console.error('Error occured miss password test: ', error)
-		}
+		await loginPage.pushLoginButton(loginValue.identifier);
 	});
 
 	test('Input miss both', async ({ loginPage }) => {
-		try {
-			await loginPage.pushLoginButton();
-		} catch(error) {
-			console.error('Error occured miss both test: ', error);
-		}
+		await loginPage.pushLoginButton();
 	});
 });
 
 test.describe('Fault entered validation', () => {
 
 	test('Fault entered identifier', async ({ loginPage }) => {
-		try {
-			await loginPage.expectFaultLogin(faultEntered.identifier, loginValue.password);
-		} catch(error) {
-			console.error('Error occured fault identifier test: ', error);
-		}
+		await loginPage.expectFaultLogin(faultEntered.identifier, loginValue.password);
 	});
 
 	test('Fault entered password', async({ loginPage }) => {
-		try {
-			await loginPage.expectFaultLogin(loginValue.identifier, faultEntered.password);
-		} catch(error) {
-			console.error('Error occured fault password test: ', error);
-		}
+		await loginPage.expectFaultLogin(loginValue.identifier, faultEntered.password);
 	});
 
 	test('Fault entered both', async ({ loginPage }) => {
-		try{
-			await loginPage.expectFaultLogin(faultEntered.identifier, faultEntered.password);
-		} catch(error) {
-			console.error('Error occured fault both test: ', error);
-		}
+		await loginPage.expectFaultLogin(faultEntered.identifier, faultEntered.password);
 	});
 	
 });
 
 test('Sign up', async ({ loginPage }) => {
-	try {
-		await loginPage.pushSignUpButton(testURLs.signUpURL);
-	} catch(error) {
-		console.error('Error occured sign up test: ', error);
-	}
+	await loginPage.pushSignUpButton(testURLs.signUpURL);
 });
 
 test('Forgot password', async ({ loginPage }) => {
-	try {
-		await loginPage.pushForgotPasswordButton(testURLs.forgotPasswordURL);
-	} catch(error) {
-		console.error('Error occured fogotpassword test: ', error);
-	}
+	await loginPage.pushForgotPasswordButton(testURLs.forgotPasswordURL);
 });
