@@ -10,7 +10,7 @@ const faultValidateMessage = readJSON(FAULT_MESSAGE_PATH);
 export class LoginPage{
 	constructor(page) {
 		this.page = page;
-		this.loginIdenifier = page.getByPlaceholder('Enter your email');
+		this.loginIdentifier = page.getByPlaceholder('Enter your email');
 		this.loginPassword = page.getByPlaceholder('Enter your password');
 		this.loginButton = page.getByRole('button', { name: 'Login' });
 		this.missIdentifierMessage = page.locator('label').filter({ hasText: missValidateMessages.identifier });
@@ -27,7 +27,7 @@ export class LoginPage{
 	 * @param {string} password - ログイン時に使用するパスワード
 	 */
 	async pushLoginButton(identifier = "", password = "") {
-		await this.loginIdenifier.fill(identifier);
+		await this.loginIdentifier.fill(identifier);
 		await this.loginPassword.fill(password);
 		await this.loginButton.click();
 
