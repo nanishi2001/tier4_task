@@ -16,11 +16,27 @@
 
 ## 注意点
 
-ログイン情報は[src\JSON\login_setting.JSON](src\JSON\login_setting.JSON)に格納するものとする。
+ログイン情報は[src\JSON\login_setting.JSON](src\JSON\login_setting.JSON)を自身で作成し、格納するものとする。
+形式は下記を参照すること。
+
+```JSON
+{
+	"identifier": "your_identifier",
+	"password": "your_password" 
+}
+```
 
 ## 使用方法
 
-下記コードを実行するとPlaywrightのUIテスト画面が立ち上がる。
+前提としてNodeJSはダウンロードしているものとする。
+下記コードを実行するとpackage.jsonに基づいた依存関係にあるライブラリをインストールし、実行環境を整えてくれる。
+
+```bush
+npm install
+```
+
+また、上の注意点でも記載したようにログイン情報を[src\JSON\login_setting.JSON](src\JSON\login_setting.JSON)に指定の形式で作成すること。
+今回作成したPlaywrightを利用したGUIでのテスト画面は下記コードを実行すると立ち上がるようになっている。
 
 ```bush
 npm run test:tier4
